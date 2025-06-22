@@ -7,7 +7,10 @@ from rest_framework.decorators import api_view
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-
+from rest_framework import generics
+from backend.models import Problem
+from backend.serializers import ProblemSerializer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
@@ -42,4 +45,17 @@ def register_user(request):
     user = User.objects.create_user(username=username, email=email, password=password)
     return Response({'detail': 'User registered successfully'}, status=status.HTTP_201_CREATED)
 
+
+
+# GET /api/problems/
+class ProblemListView(generics.ListAPIView):
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+# GET /api/problems/<id>/
+class ProblemDetailView(generics.RetrieveAPIView):
+    queryset = Problem.objects.all()
+    serializer_class = ProblemSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
 

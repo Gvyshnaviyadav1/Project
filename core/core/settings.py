@@ -83,12 +83,13 @@ DATABASES = {
 
         'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Onlinej',            # Your database name
+        'NAME': 'Onlinej',            
         'USER': 'postgres',  # Replace with your PostgreSQL username
         'PASSWORD': 'vymu', # Replace with your PostgreSQL password
         'HOST': 'localhost',
         'PORT': '5432',
-    }
+        
+        }
     
 }
 REST_FRAMEWORK = {
