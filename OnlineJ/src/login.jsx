@@ -20,8 +20,10 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
+         localStorage.setItem('access_token', data.access);
+      localStorage.setItem('refresh_token', data.refresh);
+      localStorage.setItem('username', username);
+
         alert('Login successful!');
         window.location.href = '/home'; // redirect to problems page
       } else {

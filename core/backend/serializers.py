@@ -11,4 +11,4 @@ class ProblemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Problem
-        fields = ['id', 'title', 'description', 'constraints', 'sample_input', 'sample_output', 'time_limit', 'memory_limit', 'test_cases']
+        fields = ['id', 'title', 'description', 'constraints', 'sample_input', 'sample_output', 'time_limit', 'memory_limit', 'difficulty','test_cases']

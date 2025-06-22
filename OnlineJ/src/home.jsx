@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import fetchWithAuth from './fetchWithAuth';
 
 const Home = () => {
   const [username, setUsername] = useState('User');
-  const [problems, setProblems] = useState([
-    { id: 1, title: "Two Sum", difficulty: "Easy" },
-    { id: 2, title: "Longest Substring Without Repeating Characters", difficulty: "Medium" },
-    { id: 3, title: "Graph Paths", difficulty: "Hard" }
-  ]);
+  const [problems, setProblems] = useState([]);
 
   useEffect(() => {
     // Get username from localStorage or set default
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) setUsername(storedUsername);
+    const fetchProblems = async () => {
+    try {
+      const token = localStorage.getItem('access_token');
+      const response = await fetchWithAuth('/api/problems/');
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch problems');
+      }
+
+      const data = await response.json();
+      setProblems(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  fetchProblems();
+
   }, []);
 
   const getDifficultyStyle = (difficulty) => {

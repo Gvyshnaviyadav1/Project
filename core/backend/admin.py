@@ -1,6 +1,10 @@
 from django.contrib import admin
 from backend.models import Problem, TestCase
 
-admin.site.register(Problem)
+@admin.register(Problem)
+class ProblemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title', 'difficulty')  # ✅ shows difficulty in list view
+    list_filter = ('difficulty',)                # ✅ allows filtering by difficulty
+    search_fields = ('title',)
 admin.site.register(TestCase)
-# Register your models here.
+
