@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import fetchWithAuth from './fetchWithAuth';
+import Navbar from './navbar';
 
 const Home = () => {
   const [username, setUsername] = useState('User');
@@ -55,19 +56,14 @@ const Home = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navbar */}
-      <div className="bg-white shadow p-4 flex justify-between items-center">
-        <h1 className="text-xl font-bold text-blue-600">Online Judge</h1>
-        <div className="space-x-4">
-          <a href="/home" className="text-gray-700 hover:text-blue-500">Home</a>
-          <a href="/submissions" className="text-gray-700 hover:text-blue-500">Submissions</a>
-          <button onClick={handleLogout} className="text-red-600 hover:underline">Logout</button>
-        </div>
-      </div>
+    <>
+    
+    <div className="min-h-screen bg-gray-50 m-0 p-0">
+      
+      
 
       {/* Welcome and Search */}
-      <div className="p-6">
+      <div className="p-4">
         <h2 className="text-2xl font-semibold mb-4">Welcome, {username}</h2>
         <input
           type="text"
@@ -100,6 +96,7 @@ const Home = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
