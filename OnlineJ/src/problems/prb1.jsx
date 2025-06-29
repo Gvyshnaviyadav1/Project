@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import fetchWithAuth from '../fetchWithAuth';
@@ -10,7 +9,7 @@ const ProblemDetail = () => {
   const [problem, setProblem] = useState(null);
   const [language, setLanguage] = useState('Python');
   const [code, setCode] = useState('');
-  const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchProblem = async () => {
@@ -30,8 +29,14 @@ const ProblemDetail = () => {
   }, [id, navigate]);
 
   const handleSubmit = async () => {
+    if (!code.trim()) {
+      alert('Please write some code before submitting!');
+      return;
+    }
+
+    setLoading(true);
     try {
-      const response = await fetchWithAuth('/api/submit/', {
+      const response = await fetchWithAuth('/api/submissions/submit/', {
         method: 'POST',
         body: JSON.stringify({
           problem_id: id,
@@ -40,10 +45,17 @@ const ProblemDetail = () => {
         }),
       });
 
-      const data = await response.json();
-      setResult(data);
+      if (!response.ok) {
+        throw new Error('Submission failed');
+      }
+
+      // Redirect to submissions page on success
+      navigate('/submissions');
     } catch (err) {
-      setResult({ status: 'Error', message: 'Failed to submit code.' });
+      console.error(err);
+      alert('Failed to submit code. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,19 +81,19 @@ const ProblemDetail = () => {
           <h1 className="text-2xl font-bold mb-2 text-left">{problem.title}</h1>
           <p className="mb-4 text-gray-700 text-left">{problem.description}</p>
 
-          
-          <div className="text text-left bg-gray-100">
-            <strong>Sample Input:</strong> 
-            <p> {problem.sample_input} </p>
-            <br/>
+          <div className="text-left bg-gray-100 p-2 rounded mb-2">
+            <strong>Sample Input:</strong>
+            <pre className="whitespace-pre-wrap">{problem.sample_input}</pre>
           </div>
-          <div className="text mb-2 text-left bg-gray-100">
+
+          <div className="text-left bg-gray-100 p-2 rounded mb-2">
             <strong>Sample Output:</strong>
-            <p>{problem.sample_output}</p> 
+            <pre className="whitespace-pre-wrap">{problem.sample_output}</pre>
           </div>
-          <div className="mb-2  text-left bg-sky-100">
-            <strong>Constraints:</strong> 
-           <p> {problem.constraints}</p>
+
+          <div className="text-left bg-sky-100 p-2 rounded">
+            <strong>Constraints:</strong>
+            <pre className="whitespace-pre-wrap">{problem.constraints}</pre>
           </div>
         </div>
 
@@ -109,32 +121,11 @@ const ProblemDetail = () => {
 
           <button
             onClick={handleSubmit}
-            className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+            disabled={loading}
+            className={`mt-4 py-2 px-4 rounded ${loading ? 'bg-blue-300' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
           >
-            Submit
+            {loading ? 'Submitting...' : 'Submit'}
           </button>
-
-          {/* Submission Result */}
-          {result && (
-            <div className="mt-4 bg-gray-50 border rounded p-4">
-              <p className={`font-semibold ${result.status === 'Accepted' ? 'text-green-600' : 'text-red-600'}`}>
-                Result: {result.status}
-                {result.execution_time ? ` ⏱ ${result.execution_time}s` : ''}
-                {result.message ? ` - ${result.message}` : ''}
-              </p>
-
-              {result.result_output && (
-                <pre className="mt-2 p-2 bg-gray-100 rounded text-sm whitespace-pre-wrap">
-                  {result.result_output}
-                </pre>
-              )}
-              {result.error_message && (
-                <pre className="mt-2 p-2 bg-red-100 rounded text-sm whitespace-pre-wrap text-red-700">
-                  {result.error_message}
-                </pre>
-              )}
-            </div>
-          )}
         </div>
       </div>
     </div>

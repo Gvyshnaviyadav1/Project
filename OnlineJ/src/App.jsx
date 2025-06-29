@@ -34,6 +34,7 @@ import Home from './home';
 import Register from './register';
 import ProblemDetail from './problems/prb1';
 import Layout from './layout';
+import SubmissionsPage from './submissions';
 
 function App() {
   useEffect(() => {
@@ -55,6 +56,7 @@ function App() {
         <Route element={<Layout handleLogout={handleLogout} />}>
           <Route path="/home" element={<Home />} />
           <Route path="/problems/:id" element={<ProblemDetail />} />
+           <Route path="/submissions" element={<SubmissionsPage />} />
         </Route>
       </Routes>
     </Router>
