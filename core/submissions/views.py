@@ -71,12 +71,28 @@ def submit_code(request):
     """
     user = request.user
     problem_id = request.data.get('problem_id')
+    # language = request.data.get('language')
+    # code = request.data.get('code')
+
+    # # Validate request
+    # if not all([problem_id, code, language]):
+    #     return Response({"error": "Missing fields"}, status=http_status.HTTP_400_BAD_REQUEST)
     language = request.data.get('language')
     code = request.data.get('code')
 
     # Validate request
     if not all([problem_id, code, language]):
         return Response({"error": "Missing fields"}, status=http_status.HTTP_400_BAD_REQUEST)
+
+    # Normalize language
+    LANGUAGE_MAP = {
+        "Python": "py",
+        "C++": "cpp",
+        "Java": "java"
+    }
+    language_normalized = LANGUAGE_MAP.get(language)
+    if not language_normalized:
+        return Response({'error': f"Language '{language}' not supported."}, status=400)
 
     try:
         problem = Problem.objects.get(pk=problem_id)
@@ -109,7 +125,7 @@ def submit_code(request):
     for idx, testcase in enumerate(test_cases, start=1):
         try:
             compiler_response = requests.post(COMPILER_URL, json={
-                "language": language,
+                "language": language_normalized,
                 "code": code,
                 "input": testcase.input
             }, timeout=15)
