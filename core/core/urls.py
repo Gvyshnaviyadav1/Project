@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('backend.api.urls')), 
     path('api/submissions/', include('submissions.urls')),
+    path('api/compiler/', include('compiler.urls')),
     
 ]
