@@ -1,0 +1,4 @@
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\cefde585-d258-4228-81fb-9be1a00e2516.py", line 2
+    if(a==0 || a==1):
+             ^
+SyntaxError: invalid syntax

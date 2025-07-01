@@ -140,11 +140,11 @@ def submit_code(request):
             output = result.get('output', '').strip()
 
             detailed_results.append({
-                "test_case": idx,
-                "input": testcase.input,
-                "expected_output": testcase.expected_output.strip(),
-                "actual_output": output,
-                "status": status_resp
+                "TestCase": idx,
+                #"input": testcase.input,
+                "Expected": testcase.expected_output.strip(),
+                "Output": output,
+                #"status": status_resp
             })
 
             if status_resp != 'Success':

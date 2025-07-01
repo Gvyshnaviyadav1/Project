@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\1d22341d-85a7-44c2-98c1-c81eb15bef97.py", line 4, in <module>
+    a=int(input())
+      ^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '10 20'
