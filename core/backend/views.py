@@ -27,7 +27,11 @@ from rest_framework import status
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import Problem
+from .your_llm_module import generate_from_gemini
 @api_view(['POST'])
 def register_user(request):
     username = request.data.get('username')
@@ -59,3 +63,42 @@ class ProblemDetailView(generics.RetrieveAPIView):
     serializer_class = ProblemSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def ai_hint(request, pk):
+    try:
+        problem = Problem.objects.get(pk=pk)
+    except Problem.DoesNotExist:
+        return Response({'error': 'Problem not found'}, status=404)
+
+    prompt = f"""
+    Provide a concise hint for solving this competitive programming problem:
+
+    Title: {problem.title}
+    Description: {problem.description}
+    Constraints: {problem.constraints}
+    """
+
+    hint = generate_from_gemini(prompt)
+    return Response({'hint': hint})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def ai_solution(request, pk):
+    language = request.GET.get('language', 'Python')
+    try:
+        problem = Problem.objects.get(pk=pk)
+    except Problem.DoesNotExist:
+        return Response({'error': 'Problem not found'}, status=404)
+
+    prompt = f"""
+    Write a complete solution in {language} for this competitive programming problem:
+
+    Title: {problem.title}
+    Description: {problem.description}
+    Constraints: {problem.constraints}
+    """
+
+    solution = generate_from_gemini(prompt)
+    return Response({'solution': solution})
