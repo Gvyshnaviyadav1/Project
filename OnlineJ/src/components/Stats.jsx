@@ -21,7 +21,7 @@ const Stats = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-1 gap-8">
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
               <div className="text-4xl md:text-6xl font-bold text-blue-400 mb-2">

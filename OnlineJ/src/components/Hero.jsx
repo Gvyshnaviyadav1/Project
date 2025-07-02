@@ -1,7 +1,8 @@
 import React from 'react';
 import { Play, Trophy, Users } from 'lucide-react';
-
+import { useNavigate } from 'react-router-dom';
 const Hero = () => {
+  const navigate = useNavigate();
   return (
     <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-950 via-blue-900 to-cyan-900 relative overflow-hidden">
       <div className="absolute inset-0 opacity-20 bg-pattern"></div>
@@ -25,7 +26,8 @@ const Hero = () => {
               <Play className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               Start Coding Now
             </button>
-            <button className="border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-blue-950 px-8 py-4 text-lg font-semibold">
+            <button  onClick={() => navigate('/home')}
+            className="border border-blue-400 text-blue-400 hover:bg-blue-400 hover:text-blue-950 px-8 py-4 text-lg font-semibold">
               Explore Problems
             </button>
           </div>
