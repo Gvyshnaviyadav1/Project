@@ -35,7 +35,7 @@ import Register from './register';
 import ProblemDetail from './problems/prb1';
 import Layout from './layout';
 import SubmissionsPage from './submissions';
-
+import Kome from './h1';
 function App() {
   useEffect(() => {
     console.log(import.meta.env.VITE_API_URL);
@@ -55,6 +55,8 @@ function App() {
         {/* Layout with navbar wrapping all these nested routes */}
         <Route element={<Layout handleLogout={handleLogout} />}>
           <Route path="/home" element={<Home />} />
+           <Route path="/" element={<Kome />} />
+          
           <Route path="/problems/:id" element={<ProblemDetail />} />
            <Route path="/submissions" element={<SubmissionsPage />} />
         </Route>

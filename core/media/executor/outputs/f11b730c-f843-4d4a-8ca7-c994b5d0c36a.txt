@@ -1,0 +1,5 @@
+Enter a number: Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\f11b730c-f843-4d4a-8ca7-c994b5d0c36a.py", line 8, in <module>
+    print(factorial(n))
+                    ^
+NameError: name 'n' is not defined

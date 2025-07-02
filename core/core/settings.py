@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+from decouple import config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -88,11 +88,17 @@ DATABASES = {
 
         'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Onlinej',            
-        'USER': 'postgres',  # Replace with your PostgreSQL username
-        'PASSWORD': 'vymu', # Replace with your PostgreSQL password
+         'NAME': 'Onlinej',            
+         'USER': 'postgres',  # Replace with your PostgreSQL username
+         'PASSWORD': 'vymu', # Replace with your PostgreSQL password
         'HOST': 'localhost',
         'PORT': '5432',
+        
+        #  'NAME': config('Onlinej'),            
+        #  'USER': config('postgres'),  # Replace with your PostgreSQL username
+        #  'PASSWORD': config('vymu'), # Replace with your PostgreSQL password
+        #   'HOST': config('DB_HOST'),
+        # 'PORT': config('DB_PORT', default=5432),
         
         }
     
