@@ -98,6 +98,7 @@ def ai_solution(request, pk):
     Title: {problem.title}
     Description: {problem.description}
     Constraints: {problem.constraints}
+    only code is enough
     """
 
     solution = generate_from_gemini(prompt)
