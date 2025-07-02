@@ -72,7 +72,7 @@ export default function SubmissionsPage() {
             <th className="p-2">Problem</th>
             <th className="p-2">Language</th>
             <th className="p-2">Status</th>
-            <th className="p-2">Time</th>
+            {/* <th className="p-2">Time</th> */}
             <th className="p-2">Actions</th>
           </tr>
         </thead>
@@ -93,9 +93,9 @@ export default function SubmissionsPage() {
                     {sub.status}
                   </span>
                 </td>
-                <td className="p-2">
+                {/* <td className="p-2">
                   {new Date(sub.submitted_at).toLocaleString()}
-                </td>
+                </td> */}
                 <td className="p-2">
                   <button
                     onClick={() => toggleExpanded(sub.id)}

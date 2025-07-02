@@ -1,0 +1,4 @@
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\4a4fa1e5-cbcb-49e2-bc3f-ed21040de976.py", line 1
+    ```python
+    ^
+SyntaxError: invalid syntax
