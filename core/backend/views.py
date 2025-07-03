@@ -93,11 +93,12 @@ def ai_solution(request, pk):
         return Response({'error': 'Problem not found'}, status=404)
 
     prompt = f"""
-    Write a complete solution in {language} for this competitive programming problem:
+    Write ONLY the code in {language} that solves the following problem. Do not include any explanation.
 
     Title: {problem.title}
     Description: {problem.description}
     Constraints: {problem.constraints}
+    
     
     """
 

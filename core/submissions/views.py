@@ -1,6 +1,9 @@
 
 import requests
+from django.contrib.auth.models import User
+from django.db.models import Count
 from django.shortcuts import render
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -8,6 +11,7 @@ from rest_framework import status as http_status
 from backend.models import Problem
 from .models import Submission
 from .serializers import SubmissionSerializer
+from django.db.models import Q
 
 # Compiler service endpoint
 COMPILER_URL = "http://localhost:8000/api/compiler/compile/"
@@ -38,7 +42,8 @@ def submit_code(request):
     LANGUAGE_MAP = {
         "Python": "py",
         "C++": "cpp",
-        "Java": "java"
+        "Java": "java",
+        "JavaScript":"js",
     }
     language_normalized = LANGUAGE_MAP.get(language)
     if not language_normalized:
@@ -146,4 +151,65 @@ class UserSubmissionsList(generics.ListAPIView):
 
     def get_queryset(self):
         return Submission.objects.filter(user=self.request.user).order_by('-submitted_at')
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def leaderboard_view(request):
+    leaderboard = (
+        Submission.objects
+        .filter(status='Accepted')
+        .values('user__username')
+        .annotate(total_submissions=Count('id'))
+        .order_by('-total_submissions')
+    )
+
+    result = [
+        {
+            "username": entry['user__username'],
+            "total_submissions": entry['total_submissions']
+        }
+        for entry in leaderboard
+    ]
+
+    return Response(result)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def current_user_view(request):
+    return Response({"username": request.user.username})
+
+def award_points(user, problem):
+    # Only award if user hasn't already solved this problem
+    already_solved = Submission.objects.filter(user=user, problem=problem, status='Accepted').exists()
+    if not already_solved:
+        difficulty = problem.difficulty  # Assuming you have a field like this
+        coins = 10 if difficulty == 'Easy' else 20 if difficulty == 'Medium' else 30
+        return coins
+    return 0
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    user = request.user
+
+    # Get problems solved once
+    solved = Submission.objects.filter(user=user, status='Accepted').values('problem').distinct()
+    count = solved.count()
+
+    # Assuming you have difficulty levels in Problem model
+    problem_ids = [s['problem'] for s in solved]
+    from backend.models import Problem
+    problems = Problem.objects.filter(id__in=problem_ids)
+
+    coins = 0
+    for p in problems:
+        coins += 10 if p.difficulty == 'Easy' else 20 if p.difficulty == 'Medium' else 30
+
+    return Response({
+        'username': user.username,
+        'email': user.email,
+        'problems_solved': count,
+        'coins_earned': coins,
+    })
 

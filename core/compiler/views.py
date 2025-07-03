@@ -88,7 +88,29 @@ def run_code(language, code, input_data):
                 stdout=outfile,
                 stderr=subprocess.STDOUT
             )
+    elif language == "java":
+        # Java requires writing to a file named like the class
+        class_name = "Main"
+        java_code_file_path = codes_dir / f"{class_name}.java"
+        with open(java_code_file_path, "w") as f:
+            f.write(code)
 
+        compile_result = subprocess.run(
+            ["javac", str(java_code_file_path)],
+            capture_output=True,
+            cwd=codes_dir
+        )
+        if compile_result.returncode != 0:
+            return compile_result.stderr.decode()
+
+        with open(input_file_path, "r") as infile, open(output_file_path, "w") as outfile:
+            subprocess.run(
+                ["java", "-cp", str(codes_dir), class_name],
+                stdin=infile,
+                stdout=outfile,
+                stderr=subprocess.STDOUT
+            )
+    
     else:
         return f"Language '{language}' not supported."
 
