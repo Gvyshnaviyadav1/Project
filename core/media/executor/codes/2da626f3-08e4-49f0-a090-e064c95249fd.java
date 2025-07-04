@@ -1,17 +1,15 @@
 import java.util.Scanner;
 
-public class Main {
+public class EvenOdd {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        int N = scanner.nextInt();
 
-        int n = scanner.nextInt();
-
-        if (n % 2 == 0) {
+        if (N % 2 == 0) {
             System.out.println("Even");
         } else {
             System.out.println("Odd");
         }
-
-        scanner.close();
     }
 }

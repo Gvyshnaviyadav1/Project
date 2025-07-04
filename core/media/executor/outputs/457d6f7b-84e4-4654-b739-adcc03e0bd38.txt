@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\457d6f7b-84e4-4654-b739-adcc03e0bd38.py", line 1, in <module>
+    kasjvof
+NameError: name 'kasjvof' is not defined

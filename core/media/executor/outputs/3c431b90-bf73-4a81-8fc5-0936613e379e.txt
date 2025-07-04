@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\3c431b90-bf73-4a81-8fc5-0936613e379e.py", line 1, in <module>
+    njlkfe
+NameError: name 'njlkfe' is not defined

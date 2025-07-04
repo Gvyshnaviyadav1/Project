@@ -81,6 +81,11 @@ def ai_hint(request, pk):
 
     hint = generate_from_gemini(prompt)
     return Response({'hint': hint})
+def strip_code_fences(text):
+    import re
+    text = re.sub(r"^```.*\n", "", text.strip())
+    text = re.sub(r"\n```$", "", text.strip())
+    return text.strip()
 
 
 @api_view(['GET'])
@@ -91,16 +96,41 @@ def ai_solution(request, pk):
         problem = Problem.objects.get(pk=pk)
     except Problem.DoesNotExist:
         return Response({'error': 'Problem not found'}, status=404)
+    if language.lower() == "java":
+        prompt = f"""
+                You are an expert competitive programming assistant. Provide ONLY valid Java code that can be compiled and run as-is.
 
-    prompt = f"""
-    Write ONLY the code in {language} that solves the following problem. Do not include any explanation.
+                - Wrap the entire solution inside:
 
-    Title: {problem.title}
-    Description: {problem.description}
-    Constraints: {problem.constraints}
+                ```java
+                import java.util.Scanner;
+
+                public class Main {{
+                    public static void main(String[] args) {{
+                    Scanner scanner = new Scanner(System.in);
+
+        // YOUR LOGIC HERE
+
+                scanner.close();
+                                }}
+                                }}
+                                Problem Details:
+                                Title: {problem.title}
+                                Description: {problem.description}
+                                Constraints: {problem.constraints}
+                                """
+            
+    else:  
+            prompt = f"""
+                    Write ONLY the code in {language} that solves the following problem. Do not include any explanation.
+
+                    Title: {problem.title}
+                    Description: {problem.description}
+                    Constraints: {problem.constraints}
     
     
-    """
+                    """
 
     solution = generate_from_gemini(prompt)
+    solution = strip_code_fences(solution)
     return Response({'solution': solution})

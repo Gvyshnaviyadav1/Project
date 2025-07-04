@@ -23,6 +23,19 @@ class Submission(models.Model):
     execution_time = models.FloatField(null=True, blank=True)
     result_output = models.TextField(null=True, blank=True)
     error_message = models.TextField(null=True, blank=True)
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
 
+        # Enforce policy: keep ALL accepted + last 15 non-accepted
+        if self.status != 'Accepted':
+            # Count all non-Accepted for this user
+            non_accepted_qs = Submission.objects.filter(
+                user=self.user
+            ).exclude(status='Accepted').order_by('-submitted_at')
+
+            # Keep only latest 15
+            excess = non_accepted_qs[15:]
+            if excess.exists():
+                excess.delete()
     def __str__(self):
         return f"{self.user.username} - {self.problem.title} - {self.status}"

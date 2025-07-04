@@ -1,7 +1,7 @@
 import sys
 from django.shortcuts import render
 PYTHON_CMD = "python3" if sys.platform != "win32" else "python"
-
+import re
 # Create your views here.
 
 import os
@@ -89,20 +89,22 @@ def run_code(language, code, input_data):
                 stderr=subprocess.STDOUT
             )
     elif language == "java":
-        # Java requires writing to a file named like the class
+    # ALWAYS enforce class name Main
         class_name = "Main"
         java_code_file_path = codes_dir / f"{class_name}.java"
         with open(java_code_file_path, "w") as f:
             f.write(code)
 
+    # Compile
         compile_result = subprocess.run(
             ["javac", str(java_code_file_path)],
             capture_output=True,
             cwd=codes_dir
-        )
+            )
         if compile_result.returncode != 0:
             return compile_result.stderr.decode()
 
+    # Run
         with open(input_file_path, "r") as infile, open(output_file_path, "w") as outfile:
             subprocess.run(
                 ["java", "-cp", str(codes_dir), class_name],
@@ -110,7 +112,7 @@ def run_code(language, code, input_data):
                 stdout=outfile,
                 stderr=subprocess.STDOUT
             )
-    
+
     else:
         return f"Language '{language}' not supported."
 
