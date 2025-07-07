@@ -14,4 +14,6 @@ urlpatterns = [
     path('problems/<int:pk>/', ProblemDetailView.as_view(), name='problem-detail'),
     path('problems/<int:pk>/ai_hint/', views.ai_hint, name='ai_hint'),
     path('problems/<int:pk>/ai_solution/', views.ai_solution, name='ai_solution'),
+     path('problems/<int:pk>/time_space/', views.time_space, name='time_space'),
+      path('problems/<int:pk>/ai_correct_code/', views.ai_correct_code, name='correct_code'),
 ]

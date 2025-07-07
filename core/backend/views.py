@@ -134,3 +134,68 @@ def ai_solution(request, pk):
     solution = generate_from_gemini(prompt)
     solution = strip_code_fences(solution)
     return Response({'solution': solution})
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def ai_correct_code(request, pk):
+    try:
+        problem = Problem.objects.get(pk=pk)
+    except Problem.DoesNotExist:
+        return Response({'error': 'Problem not found'}, status=404)
+
+    user_code = request.data.get('code')
+    language = request.data.get('language', 'Python')
+
+    if not user_code:
+        return Response({'error': 'No code provided'}, status=400)
+
+    prompt = f"""
+    The following is a {language} solution to a competitive programming problem. 
+    Fix any syntax errors, logic issues, or performance problems. Only return the corrected code. 
+    
+    Title: {problem.title}
+    Description: {problem.description}
+    Constraints: {problem.constraints}
+
+    User's code:
+    ```{language.lower()}
+    {user_code}
+    ```
+    """
+
+    corrected_code = strip_code_fences(generate_from_gemini(prompt))
+
+    return Response({'corrected_code': corrected_code})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def time_space(request, pk):
+    try:
+        problem = Problem.objects.get(pk=pk)
+    except Problem.DoesNotExist:
+        return Response({'error': 'Problem not found'}, status=404)
+
+    user_code = request.data.get('code')
+    language = request.data.get('language', 'Python')
+
+    if not user_code:
+        return Response({'error': 'No code provided'}, status=400)
+
+    prompt = f"""
+    The following is a {language} solution to a competitive programming problem. 
+    and return the time ans space complexity for the following code with this question 
+    
+    Title: {problem.title}
+    Description: {problem.description}
+    Constraints: {problem.constraints}
+
+    User's code:
+    ```{language.lower()}
+    {user_code}
+    ```
+    """
+
+    ans = strip_code_fences(generate_from_gemini(prompt))
+
+    return Response({'Time and Space': ans})

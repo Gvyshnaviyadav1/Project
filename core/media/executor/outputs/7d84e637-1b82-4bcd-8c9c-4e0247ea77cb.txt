@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\7d84e637-1b82-4bcd-8c9c-4e0247ea77cb.py", line 8, in <module>
+    check_even_or_odd()
+TypeError: check_even_or_odd() missing 1 required positional argument: 'N'
