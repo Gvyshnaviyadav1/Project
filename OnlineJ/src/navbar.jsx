@@ -21,6 +21,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import logo from './assets/CodeQuest (3).png';
 
 
 const Navbar = ({ handleLogout }) => {
@@ -53,9 +54,16 @@ const Navbar = ({ handleLogout }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Brand */}
-          <Link to="/" className="text-xl font-semibold text-white tracking-tight hover:text-blue-200">
-            Online Judge
-          </Link>
+          <Link to="/" className="flex items-center space-x-2 text-xl font-semibold text-white tracking-tight hover:text-blue-200">
+  <img 
+    src={logo}
+    alt="CodeQuest" 
+    className="h-10 w-auto object-contain"
+  />
+  <span>CodeQuest</span>
+</Link>
+
+          
 
           {/* Links & Profile */}
           <div className="flex items-center space-x-4">

@@ -38,7 +38,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">Online Judge</h2>
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">CodeQuest</h2>
         <form onSubmit={handleLogin}>
           <label className="block mb-2 text-sm font-semibold">Email or Username</label>
           <input
