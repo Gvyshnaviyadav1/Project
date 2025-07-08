@@ -8,7 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from rest_framework import generics
-from backend.models import Problem
+from backend.models import Problem,UserProfile
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from backend.serializers import ProblemSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -204,3 +206,10 @@ def time_space(request, pk):
     ans = strip_code_fences(generate_from_gemini(prompt))
 
     return Response({'Time and Space': ans})
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+    else:
+        instance.profile.save()

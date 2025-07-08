@@ -8,10 +8,11 @@ from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status as http_status
-from backend.models import Problem
-from .models import Submission
+from backend.models import Problem,UserProfile
+from .models import Submission,SolvedProblem
 from .serializers import SubmissionSerializer
 from django.db.models import Q
+
 
 # Compiler service endpoint
 COMPILER_URL = "http://localhost:8000/api/compiler/compile/"
@@ -43,7 +44,7 @@ def submit_code(request):
         "Python": "py",
         "C++": "cpp",
         "Java": "java",
-        "JavaScript":"js",
+       
     }
     language_normalized = LANGUAGE_MAP.get(language)
     if not language_normalized:
@@ -100,10 +101,10 @@ def submit_code(request):
                 code_file_uuid = result.get('uuid')
             detailed_results.append({
                 "TestCase": idx,
-                #"input": testcase.input,
+                
                 "Expected": testcase.expected_output.strip(),
                 "Output": output_text,
-                #"status": status_resp
+               
             })
 
             if status_resp != 'Success':
@@ -139,6 +140,14 @@ def submit_code(request):
         submission.code_file_uuid = uuid
         submission.result_output = "All test cases passed!"
         submission.error_message = None
+        submission.save()
+        #award points for first time solving
+        already_solved = SolvedProblem.objects.filter(user=user, problem=problem).exists()
+        if not already_solved:
+             difficulty = problem.difficulty
+             coins_awarded = 10 if difficulty == 'Easy' else 20 if difficulty == 'Medium' else 30
+             user.profile.coins += coins_awarded
+             user.profile.save()
     else:
         submission.status = 'Wrong Answer'
         submission.code_file_uuid = uuid
@@ -163,17 +172,15 @@ class UserSubmissionsList(generics.ListAPIView):
 @permission_classes([IsAuthenticated])
 def leaderboard_view(request):
     leaderboard = (
-        Submission.objects
-        .filter(status='Accepted')
-        .values('user__username')
-        .annotate(total_submissions=Count('id'))
-        .order_by('-total_submissions')
+         UserProfile.objects
+        .select_related('user')
+        .order_by('-coins')
     )
 
     result = [
         {
-            "username": entry['user__username'],
-            "total_submissions": entry['total_submissions']
+           "username": entry.user.username,
+            "coins": entry.coins
         }
         for entry in leaderboard
     ]

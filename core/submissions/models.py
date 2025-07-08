@@ -28,33 +28,57 @@ class Submission(models.Model):
     result_output = models.TextField(null=True, blank=True)
     error_message = models.TextField(null=True, blank=True)
     def save(self, *args, **kwargs):
+        try:
+            # Get the original version from DB
+            original = Submission.objects.get(pk=self.pk)
+            old_uuid = original.code_file_uuid
+        except Submission.DoesNotExist:
+            old_uuid = None
+
         super().save(*args, **kwargs)
 
-        # Enforce policy: keep ALL accepted + last 15 non-accepted
+        # 🧹 If UUID changed, delete old files
+        if old_uuid and old_uuid != self.code_file_uuid:
+            self.delete_files(uuid_to_delete=old_uuid)
+
+        # 🧹 Keep only last 15 non-Accepted
         if self.status != 'Accepted':
-            # Count all non-Accepted for this user
-            non_accepted_qs = Submission.objects.filter(
+            all_user_submissions = Submission.objects.filter(
                 user=self.user
-            ).exclude(status='Accepted').order_by('-submitted_at')
+                        ).order_by('-submitted_at')
 
-            # Keep only latest 15
-            excess = non_accepted_qs[15:]
-            if excess.exists():
-                for s in excess:
-                    s.delete()
+            excess = all_user_submissions[15:]
+            for s in excess:
+                s.delete()
 
-    def delete_files(self):
-        if not self.code_file_uuid:
+
+    def delete_files(self, uuid_to_delete=None):
+        """
+        Deletes files associated with a given UUID.
+        If uuid_to_delete is None, uses self.code_file_uuid.
+        """
+        uuid_to_use = uuid_to_delete or self.code_file_uuid
+        if not uuid_to_use:
             return
+
         base_dir = settings.EXECUTOR_ROOT
         for folder in ['codes', 'inputs', 'outputs']:
             for ext in ['.py', '.cpp', '.java', '.txt']:
-                path = base_dir / folder / f"{self.code_file_uuid}{ext}"
+                path = base_dir / folder / f"{uuid_to_use}{ext}"
                 if path.exists():
                     path.unlink()
+
     def delete(self, *args, **kwargs):
         self.delete_files()
         super().delete(*args, **kwargs)
-    
+
     def __str__(self):
         return f"{self.user.username} - {self.problem.title} - {self.status}"
+    
+class SolvedProblem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+    solved_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'problem')

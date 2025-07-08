@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 const Kome = () => {
   return (
     <div className="min-h-screen">
-      {/* <Header /> */}
+     
       <Hero />
       <Features />
       <Stats />

@@ -22,7 +22,7 @@ export default function LeaderboardPage() {
         const leaderboardData = await leaderboardRes.json();
 
         // Sort by total_submissions descending
-        leaderboardData.sort((a, b) => b.total_submissions - a.total_submissions);
+        leaderboardData.sort((a, b) => b.coins - a.coins);
 
         setCurrentUser(userData.username);
         setLeaderboard(leaderboardData);
@@ -52,7 +52,7 @@ export default function LeaderboardPage() {
               <tr>
                 <th className="p-3 text-blue-800 font-medium text-left">Rank</th>
                 <th className="p-3 text-blue-800 font-medium text-left">User</th>
-                <th className="p-3 text-blue-800 font-medium text-left">Total Submissions</th>
+                <th className="p-3 text-blue-800 font-medium text-left">Total Coins</th>
               </tr>
             </thead>
             <tbody>
@@ -71,7 +71,7 @@ export default function LeaderboardPage() {
                   >
                     <td className="p-3">{index + 1}</td>
                     <td className="p-3">{user.username}</td>
-                    <td className="p-3">{user.total_submissions}</td>
+                    <td className="p-3">{user.coins}</td>
                   </tr>
                 );
               })}
@@ -92,7 +92,7 @@ export default function LeaderboardPage() {
               <div className="flex items-center justify-between text-blue-800">
                 <span className="font-semibold">Rank: #{position + 1}</span>
                 <span className="font-semibold">User: {userData.username}</span>
-                <span className="font-semibold">Total Submissions: {userData.total_submissions}</span>
+                <span className="font-semibold">Coins: {userData.coins}</span>
               </div>
             );
           })()}
