@@ -127,7 +127,9 @@ def ai_solution(request, pk):
                     Title: {problem.title}
                     Description: {problem.description}
                     Constraints: {problem.constraints}
-    
+                    remember u also need to get the required input from user and call function
+                    and dont add unnecessary print statements when taking input 
+                    and in case the question asks vector input take size as integer and even elements with datatype depending on question
     
                     """
 
@@ -162,6 +164,9 @@ def ai_correct_code(request, pk):
     ```{language.lower()}
     {user_code}
     ```
+    remember u need to take input as well from the user
+    and dont add unnecessary print statements when taking input 
+    and in case the question asks vector input take size as integer and even elements with datatype depending on question
     """
 
     corrected_code = strip_code_fences(generate_from_gemini(prompt))

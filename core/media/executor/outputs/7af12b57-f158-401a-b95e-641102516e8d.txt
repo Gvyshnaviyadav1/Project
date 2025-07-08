@@ -1,0 +1,5 @@
+Enter the list of numbers separated by spaces: Enter the value to remove: Traceback (most recent call last):
+  File "C:\Users\Administrator\OneDrive\Desktop\Oj\Project\core\media\executor\codes\7af12b57-f158-401a-b95e-641102516e8d.py", line 22, in <module>
+    val = int(input("Enter the value to remove: "))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: ''

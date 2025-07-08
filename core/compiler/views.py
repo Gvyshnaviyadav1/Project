@@ -32,7 +32,7 @@ class CompileCodeView(APIView):
 
         try:
             output = run_code(language, code, stdin_input)
-            return Response({'output': output, 'status': 'Success'})
+            return Response({'output': output, 'uuid': output['uuid'],'status': 'Success'})
         except Exception as e:
             return Response({'error': str(e), 'status': 'Error'}, status=500)
 def run_code(language, code, input_data):
@@ -119,4 +119,8 @@ def run_code(language, code, input_data):
     with open(output_file_path, "r") as outfile:
         output_data = outfile.read()
     output_data = clean_error_output(output_data)
-    return output_data
+    return {
+    "output": output_data,
+    "uuid": unique
+}
+

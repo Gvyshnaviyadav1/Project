@@ -22,9 +22,9 @@ const Footer = () => {
           <div>
             <h3 className="text-white font-semibold mb-4">Platform</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-blue-200 hover:text-blue-400 transition-colors">Problems</a></li>
+              <li><a href="/problems/:id" className="text-blue-200 hover:text-blue-400 transition-colors">Problems</a></li>
               
-              <li><a href="#" className="text-blue-200 hover:text-blue-400 transition-colors">Leaderboard</a></li>
+              <li><a href="/leaderboard" className="text-blue-200 hover:text-blue-400 transition-colors">Leaderboard</a></li>
               
             </ul>
           </div>

@@ -67,7 +67,7 @@ def submit_code(request):
     all_passed = True
     error_message = ""
     detailed_results = []
-
+    code_file_uuid = None
     # Get all non-sample test cases
     test_cases = problem.test_cases.filter(is_sample=False)
     if not test_cases.exists():
@@ -92,13 +92,17 @@ def submit_code(request):
 
             result = compiler_response.json()
             status_resp = result.get('status')
-            output = result.get('output', '').strip()
+            output_obj = result.get('output', {})
+            output_text = output_obj.get('output', '').strip()
+            uuid = output_obj.get('uuid')
 
+            if not code_file_uuid:
+                code_file_uuid = result.get('uuid')
             detailed_results.append({
                 "TestCase": idx,
                 #"input": testcase.input,
                 "Expected": testcase.expected_output.strip(),
-                "Output": output,
+                "Output": output_text,
                 #"status": status_resp
             })
 
@@ -108,10 +112,10 @@ def submit_code(request):
                 break
 
             def normalize(s):
-                return " ".join(s.strip().split())
+                return " ".join(s.strip().split()).lower()
 
             expected_normalized = normalize(testcase.expected_output)
-            actual_normalized = normalize(output)
+            actual_normalized = normalize(output_text)
 
             if actual_normalized != expected_normalized:
                 all_passed = False
@@ -127,14 +131,17 @@ def submit_code(request):
             all_passed = False
             error_message = f"Internal Error: {str(e)}"
             break
-
+    if code_file_uuid:
+        submission.code_file_uuid = code_file_uuid
     # 3️⃣ Update submission result
     if all_passed:
         submission.status = 'Accepted'
+        submission.code_file_uuid = uuid
         submission.result_output = "All test cases passed!"
         submission.error_message = None
     else:
         submission.status = 'Wrong Answer'
+        submission.code_file_uuid = uuid
         submission.result_output = str(detailed_results)
         submission.error_message = error_message
 
