@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 from decouple import config
 from pathlib import Path
+import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,21 +88,20 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
 
-        'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-         'NAME': 'Onlinej',            
-         'USER': 'postgres',  # Replace with your PostgreSQL username
-         'PASSWORD': 'vymu', # Replace with your PostgreSQL password
-        'HOST': 'localhost',
-        'PORT': '5432',
+        # 'default': {
+        # 'ENGINE': 'django.db.backends.postgresql',
+        #  'NAME': 'Onlinej',            
+        #  'USER': 'postgres',  
+        #  'PASSWORD': 'vymu', 
+        # 'HOST': 'localhost',
+        # 'PORT': '5432',
         
-        #  'NAME': config('Onlinej'),            
-        #  'USER': config('postgres'),  # Replace with your PostgreSQL username
-        #  'PASSWORD': config('vymu'), # Replace with your PostgreSQL password
-        #   'HOST': config('DB_HOST'),
-        # 'PORT': config('DB_PORT', default=5432),
+      
         
-        }
+        # }
+        'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL')
+    )
     
 }
 REST_FRAMEWORK = {
