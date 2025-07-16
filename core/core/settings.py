@@ -13,13 +13,15 @@ from decouple import config
 from pathlib import Path
 import dj_database_url
 import os
-
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
 EXECUTOR_ROOT = MEDIA_ROOT / 'executor'
 
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR,  '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -99,9 +101,8 @@ DATABASES = {
       
         
         # }
-        'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL')
-    )
+        'default': env.db()
+    
     
 }
 print(os.environ.get('DATABASE_URL'))
