@@ -19,10 +19,11 @@ services:
   backend:
     build:
       context: ./core
-    working_dir: /app
-    command: gunicorn core.wsgi:application --bind 0.0.0.0:8000
+    #working_dir: /app
+    
     volumes:
       - ./core:/app
+    command:  gunicorn core.wsgi:application --bind 0.0.0.0:8000
     environment:
       - DATABASE_URL=postgres://postgres:vymu@db:5432/Onlinej
     depends_on:
@@ -32,7 +33,7 @@ services:
       - "8000:8000"
 
   frontend:
-    build: ./Onlinej
+    build: ./OnlineJ
     ports:
       - "3000:80"
 

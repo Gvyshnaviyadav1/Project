@@ -15,5 +15,6 @@ urllib3==2.5.0
 dj-database-url
 gunicorn
 python-decouple
+django-environ
 
 

@@ -4,7 +4,7 @@ FROM python:3.11-slim
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-
+#ENV PYTHONPATH "${PYTHONPATH}:/app"
 # Set working directory
 WORKDIR /app
 RUN apt-get update && apt-get install -y gcc libpq-dev
