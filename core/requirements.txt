@@ -16,5 +16,7 @@ dj-database-url
 gunicorn
 python-decouple
 django-environ
+google-generativeai
+
 
 
