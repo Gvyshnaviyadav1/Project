@@ -4,7 +4,7 @@ import React from 'react';
 const Stats = () => {
   const stats = [
     
-    { number: "100+", label: "Problems" },
+    { number: "10+", label: "Problems" },
    
    
   ];
