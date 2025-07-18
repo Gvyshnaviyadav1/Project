@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/app/media/executor/codes/38aabefa-8764-4bc8-a1f8-520671c04572.py", line 13, in <module>
+    n = int(input())
+        ^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '1 2 3 4 5 6 7'

@@ -101,7 +101,7 @@ def ai_solution(request, pk):
     if language.lower() == "java":
         prompt = f"""
                 You are an expert competitive programming assistant. Provide ONLY valid Java code that can be compiled and run as-is.
-
+                 u also need to take input from user
                 - Wrap the entire solution inside:
 
                 ```java
@@ -132,6 +132,7 @@ def ai_solution(request, pk):
                     remember u also need to get the required input from user and call function
                     and dont add unnecessary print statements when taking input 
                     and in case the question asks vector input take size as integer and even elements with datatype depending on question
+                    remember u also need to take input from the user
     
                     """
 
@@ -169,6 +170,7 @@ def ai_correct_code(request, pk):
     remember u need to take input as well from the user
     and dont add unnecessary print statements when taking input 
     and in case the question asks vector input take size as integer and even elements with datatype depending on question
+    remember u need to take input also from the user 
     """
 
     corrected_code = strip_code_fences(generate_from_gemini(prompt))
