@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/app/media/executor/codes/48bc92ba-a53b-4d60-86c7-77de3695cec1.py", line 8, in <module>
+    solve()
+  File "/app/media/executor/codes/48bc92ba-a53b-4d60-86c7-77de3695cec1.py", line 2, in solve
+    a = int(input())
+        ^^^^^^^^^^^^
+ValueError: invalid literal for int() with base 10: '-1 0 1'
