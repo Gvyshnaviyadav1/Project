@@ -289,7 +289,8 @@ def run_code(language, code, input_data):
     output_data = clean_error_output(output_data)
     return {
         "output": output_data,
-        "uuid": unique
+        "uuid": unique,
+        "status":"Success"
     }
 
 
