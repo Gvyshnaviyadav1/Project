@@ -310,7 +310,7 @@ def submit_code(request):
             #     error_message = f"Compiler service error: {compiler_response.text}"
             #     all_passed = False
             #     break
-            compiler_response["status"]="Success"
+            #compiler_response["status"]="Success"
             result = compiler_response
             if not code_file_uuid:
                 code_file_uuid = result.get('uuid')
