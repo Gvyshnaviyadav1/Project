@@ -7,13 +7,15 @@ ENV PYTHONUNBUFFERED 1
 #ENV PYTHONPATH "${PYTHONPATH}:/app"
 # Set working directory
 WORKDIR /app
-RUN apt-get update && apt-get install -y gcc libpq-dev
+RUN apt-get update && apt-get install -y gcc g++ openjdk-17-jdk libpq-dev
+
 # Install dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy entire project
 COPY . .
+RUN python manage.py collectstatic --noinput
 
 # Expose port 8000
 EXPOSE 8000
