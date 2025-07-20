@@ -22,7 +22,8 @@ const Hero = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold group">
+            <button onClick={()=>navigate('/compiler')}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold group">
               <Play className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               Start Coding Now
             </button>
