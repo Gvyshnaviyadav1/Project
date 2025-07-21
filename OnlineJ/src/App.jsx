@@ -17,19 +17,19 @@ function App() {
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.href = '/login';
+    window.location.href = '/';
   };
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
         {/* Layout with navbar wrapping all these nested routes */}
         <Route element={<Layout handleLogout={handleLogout} />}>
           <Route path="/home" element={<Home />} />
-           <Route path="/" element={<Kome />} />
+           <Route path="/welcome" element={<Kome />} />
             <Route path="/compiler" element={<Compiler />} /> 
 
            <Route path="/profile" element={<ProfilePage />} />

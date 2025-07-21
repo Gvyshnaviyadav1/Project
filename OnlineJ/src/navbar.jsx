@@ -30,7 +30,7 @@ const Navbar = ({ handleLogout }) => {
   const dropdownRef = useRef(null);
    const navigate = useNavigate();
   const navLinks = [
-    { to: '/', label: 'Home' },
+    { to: '/welcome', label: 'Home' },
     { to: '/home', label: 'Problems' },
     { to: '/submissions', label: 'Submissions' },
     { to: '/leaderboard', label: 'Leaderboard' },
@@ -54,7 +54,7 @@ const Navbar = ({ handleLogout }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           {/* Brand */}
-          <Link to="/" className="flex items-center space-x-2 text-xl font-semibold text-white tracking-tight hover:text-blue-200">
+          <Link to="/welcome" className="flex items-center space-x-2 text-xl font-semibold text-white tracking-tight hover:text-blue-200">
   <img 
     src={logo}
     alt="CodeQuest" 

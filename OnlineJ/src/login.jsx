@@ -26,7 +26,7 @@ const Login = () => {
       localStorage.setItem('username', username);
 
         alert('Login successful!');
-        window.location.href = '/'; // redirect to problems page
+        window.location.href = '/welcome'; // redirect to problems page
       } else {
         setErrorMsg(data.detail || 'Login failed');
       }
